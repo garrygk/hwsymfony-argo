@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hwsymfony
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: 09999-garry-playground
+  destination:
+    server: 'https://87.233.137.168:6443'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  info:
+    - name: customer_id
+      value: "09999"
+  source:
+    repoURL: 'https://registry.services.k8s.true.nl/chartrepo/09999-garry-playground'
+    targetRevision: 0.1.*
+    chart: hwsymfony
+    helm:
+      values: |
+        service:
+          type: ClusterIP
+          port: 8080
